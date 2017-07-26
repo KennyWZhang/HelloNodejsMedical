@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <% include header.html %>
+
 <div class="container">
     <div class="row">
         <div class="col-lg-6">
             <div class="input-group">
-                <a class="btn btn-link" href="/member/add">新增会员</a>
-                <a class="btn btn-link" href="/member/show">查看会员</a>
                 <a class="btn btn-link" href="/doctor/add">新增医生</a>
                 <input id="input_query" type="text" class="form-control">
                 <span class="input-group-btn">
@@ -14,7 +13,6 @@
             </div>
         </div>
     </div>
-    <!--<a class="btn btn-primary" href="/doctor/qry">新增</a>-->
 </div>
 <div>
     <legend>医生基本信息</legend>
@@ -28,9 +26,26 @@
         </tr>
         </thead>
         <tbody id="tbody">
-
+          <% for (var i = 0; i < doctors.length; i++) { %>
+              <!-- id = doctors[i]._id;
+              name = doctors[i].name;
+              prof_title = doctors[i].prof_title;
+              city = doctors[i].city;
+              telnumber = doctors[i].telnumber; -->
+              <tr>
+                <td><%= doctors[i].name %></td>
+                <td><%= doctors[i].prof_title %></td>
+                <td><%= doctors[i].city %></td>
+                <td><%= doctors[i].telnumber %></td>
+                <td>
+                  <a class='btn btn-link' href="<%= '/doctor/show/'+ doctors[i]._id %>">详细</a>
+                  <a class='btn btn-link' href="<%= '/doctor/update/'+ doctors[i]._id %>">编辑</a>
+                  <a class='btn btn-link' href="<%= '/doctor/delete/'+ doctors[i]._id %>">删除</a>
+                </td>
+              </tr>
+            <% } %>
         </tbody>
     </table>
 </div>
-<!--<a class="btn btn-primary" href="/logout">退出</a>-->
+
 <% include footer.html %>

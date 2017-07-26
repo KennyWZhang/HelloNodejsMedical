@@ -11,10 +11,8 @@ var qryAllDoctor = function () {
         url: '/doctor/query/' + name,
         success: function (data, textStatus) {
             if (data) {
-//                alert('success');
                 allDoctor = data;
                 showDoctorTable();
-//                    $(location).attr('href','/doctor/'+allDoctor.name);
             } else {
                 alert('对不起,没有相关用户!');
             }

@@ -5,9 +5,9 @@
  */
 
 module.exports = {
-    cookieSecret: 'norway',
+    // cookieSecret: 'norway',
     dbUrl: 'mongodb://localhost/medical',
-    sessionDBUrl: 'mongodb://localhost/session',
-    host: 'localhost',
+    // sessionDBUrl: 'mongodb://localhost/session',
+    // host: 'localhost',
     port: 3003
 };

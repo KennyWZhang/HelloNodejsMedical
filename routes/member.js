@@ -1,11 +1,12 @@
-var logger = require('../log4js').getLogger('routes.member');
+// var logger = require('../log4js').getLogger('routes.member');
+var doctor = require('../daos/DoctorDao');
 
 exports.home = function (req, res) {
     res.render('home', {title: 'Home', user: req.session.user});
 }
 
 exports.showMember = function (req, res) {
-    logger.info(req.params.id);
+    // logger.info(req.params.id);
     var id = req.params.id;
     if (id) {
         // 展示该医生的详细信息
@@ -31,7 +32,7 @@ exports.showMember = function (req, res) {
 };
 
 exports.doAddMember = function (req, res) {
-    logger.info(req.body);
+    // logger.info(req.body);
     var obj = req.body;
     var id = req.params.id;
 
@@ -58,7 +59,7 @@ exports.doAddMember = function (req, res) {
 };
 
 exports.addMember = function (req, res) {
-    logger.info(req.params.id);
+    // logger.info(req.params.id);
     if (req.params.id) {
         // 更新
         return res.render('member', {

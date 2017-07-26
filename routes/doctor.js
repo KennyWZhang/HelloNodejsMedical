@@ -3,55 +3,75 @@
  */
 
 var doctor = require('../daos/DoctorDao');
-var logger = require('../log4js').getLogger('routes.doctor');
 
 exports.showDoctor = function (req, res) {
-    logger.info(req.params.id);
-    var id = req.params.id;
-    if (id) {
-        // 展示该医生的详细信息
-        doctor.findById(id, function (err, obj) {
-            if (err) {
-                req.session.error = '展示医生信息失败,请重试';
-            } else {
-                req.session.success = '展示信息成功';
-                return res.send(obj);
-            }
-        });
+  if (req.params.id) {
 
-    } else {
-        // 医生信息首页
-        /* return res.render('doctor', {
-         title: '医生信息',
-         label: '医生:',
-         doctor: false
-         });*/
-
-        return res.redirect('/home');
-    }
-};
-
-exports.addDoctor = function (req, res) {
-    logger.info(req.params.id);
-    if (req.params.id) {
+    doctor.findById(req.params.id, function (err, doctorInfo) {
+      if (err == null) {
         // 更新
         return res.render('doctor', {
             title: '编辑医生信息',
-            label: '编辑医生:'
-//            doctor: req.params.id
+            label: '编辑医生:',
+            doctor: doctorInfo,
+            readonly: true
         });
-    } else {
-        // 新增
+      } else {
+        req.session.error = '查询医生信息失败,请重试';
         return res.render('doctor', {
-            title: '新增医生信息',
-            label: '新增医生:',
-            doctor: false
+            title: '编辑医生信息',
+            label: '编辑医生:'
         });
-    }
+      }
+    })
+  }
+};
+
+exports.addDoctor = function (req, res) {
+
+    // 新增
+    return res.render('doctor', {
+        title: '新增医生信息',
+        label: '新增医生:'
+    });
 };
 
 exports.doAddDoctor = function (req, res) {
-    logger.info(req.body);
+    var obj = req.body;
+
+    doctor.add(obj, function (err) {
+        if (err) {
+            req.session.error = '添加医生信息失败,请重试';
+        } else {
+            req.session.success = '添加医生信息成功';
+            return res.redirect('/home');
+        }
+    });
+};
+
+exports.updateDoctor = function (req, res) {
+    if (req.params.id) {
+
+      doctor.findById(req.params.id, function (err, doctorInfo) {
+        if (err == null) {
+          // 更新
+          return res.render('doctor', {
+              title: '编辑医生信息',
+              label: '编辑医生:',
+              doctor: doctorInfo
+          });
+        } else {
+          req.session.error = '查询医生信息失败,请重试';
+          return res.render('doctor', {
+              title: '编辑医生信息',
+              label: '编辑医生:'
+          });
+        }
+      })
+    }
+};
+
+exports.doUpdateDoctor = function (req, res) {
     var obj = req.body;
     var id = req.params.id;
 
@@ -64,22 +84,11 @@ exports.doAddDoctor = function (req, res) {
                 return res.redirect('/home');
             }
         });
-    } else {
-        doctor.add(obj, function (err) {
-            if (err) {
-                req.session.error = '添加医生信息失败,请重试';
-            } else {
-                req.session.success = '添加医生信息成功';
-                return res.redirect('/home');
-            }
-        });
     }
-
 };
 
 exports.findDoctorByName = function (req, res) {
     var name = req.params.name;
-    logger.info(name);
     // 构造模糊查询query对象
     var query = {};
     if (name) {
